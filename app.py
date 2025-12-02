@@ -30,6 +30,21 @@ if uploaded:
     st.subheader("📁 Data Awal")
     st.dataframe(df.head())
 
+    st.subheader("Produk Terlaris")
+    top_products = df['Nama Produk'].value_counts().head(10)
+    st.dataframe(top_products)
+
+    total_transaksi = df['No. Pesanan'].nunique()
+    total_produk = df['Nama Produk'].nunique()
+    st.write(f"Jumlah transaksi: {total_transaksi}")
+    st.write(f"Jumlah produk : {total_produk}")
+
+    trx_count = df.groupby('No. Pesanan')['Nama Produk'].nunique()
+    single_item = sum(trx_count == 1)
+    multi_item  = sum(trx_count > 1)
+    st.write(f"Single-item: {single_item}")
+    st.write(f"Multi-item : {multi_item}")
+
     # -----------------------------------
     # SELECTION
     # -----------------------------------
