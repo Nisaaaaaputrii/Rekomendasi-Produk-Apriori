@@ -33,12 +33,12 @@ if uploaded:
     st.subheader("Produk Terlaris")
     top_products = df['Nama Produk'].value_counts().head(10)
     st.dataframe(top_products)
-
-    total_transaksi = df['No. Pesanan'].nunique()
+    
     total_produk = df['Nama Produk'].nunique()
-    st.write(f"Jumlah transaksi: {total_transaksi}")
+    total_transaksi = df['No. Pesanan'].nunique()
     st.write(f"Jumlah produk : {total_produk}")
-
+    st.write(f"Jumlah transaksi: {total_transaksi}")
+    
     trx_count = df.groupby('No. Pesanan')['Nama Produk'].nunique()
     single_item = sum(trx_count == 1)
     multi_item  = sum(trx_count > 1)
@@ -63,7 +63,6 @@ if uploaded:
     # -----------------------------------
     # OVERSAMPLING TRANSAKSI
     # -----------------------------------
-    st.subheader("🔧 Oversampling (Menyamakan jumlah transaksi single-item & multi-item)")
 
     trx_count = df.groupby('No. Pesanan')['Nama Produk'].nunique()
     trx_list = df.groupby('No. Pesanan')['Nama Produk'].apply(list)
@@ -79,18 +78,12 @@ if uploaded:
     # Gabungkan transaksi seimbang
     balanced_transactions = single_list + multi_oversampled
 
-    st.write(f"Single-item: {len(single_list)} transaksi")
-    st.write(f"Multi-item : {len(multi_oversampled)} transaksi")
-
     # -----------------------------------
     # TRANSACTION ENCODING
     # -----------------------------------
     te = TransactionEncoder()
     te_ary = te.fit(balanced_transactions).transform(balanced_transactions)
     df_encoded = pd.DataFrame(te_ary, columns=te.columns_).astype(int)
-
-    st.subheader("📌 Data Setelah Encoding")
-    st.dataframe(df_encoded.head())
 
     # -----------------------------------
     # INPUT PARAMETER APRIORI
