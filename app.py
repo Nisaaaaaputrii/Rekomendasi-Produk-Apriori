@@ -116,7 +116,7 @@ if uploaded:
         rules_clean['consequents'] = rules_clean['consequents'].apply(lambda x: ", ".join(list(x)))
         rules_clean = rules_clean.sort_values(by="confidence", ascending=False)
 
-        st.dataframe(rules_clean)
+        st.dataframe(rules_clean, hide_index=True)
 
         # -----------------------------------
         # DOWNLOADABLE RESULT
