@@ -6,7 +6,7 @@ from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori, association_rules
 
 # -----------------------------------
-# TITLE & DESCRIPTION
+# JUDUL
 # -----------------------------------
 st.title("📊 Analisis Association Rule dengan Apriori")
 st.write("Upload dataset transaksi dan jalankan metode Apriori untuk menemukan pola pembelian konsumen.")
@@ -20,15 +20,13 @@ if uploaded:
     st.success("File berhasil diupload!")
 
     # -----------------------------------
-    # LOAD DATAFRAME
+    # LOAD DATA
     # -----------------------------------
     if uploaded.name.endswith(".xlsx"):
         df = pd.read_excel(uploaded)
     else:
         df = pd.read_csv(uploaded)
 
-    st.subheader("📁 Data Awal")
-    st.dataframe(df.head())
 
     st.subheader("Produk Terlaris")
     top_products = df['Nama Produk'].value_counts().head(10)
@@ -46,7 +44,7 @@ if uploaded:
     st.write(f"Multi-item : {multi_item}")
 
     # -----------------------------------
-    # VALIDASI KOLUMN
+    # DATA SELECTION
     # -----------------------------------
     required_cols = ['No. Pesanan', 'Nama Produk']
     if not all(col in df.columns for col in required_cols):
@@ -54,15 +52,14 @@ if uploaded:
         st.stop()
 
     # -----------------------------------
-    # CLEANING
+    # DATA CLEANING
     # -----------------------------------
     df = df[['No. Pesanan', 'Nama Produk']].dropna().drop_duplicates()
     df['Nama Produk'] = df['Nama Produk'].str.lower().str.strip()
 
     # -----------------------------------
-    # OVERSAMPLING TRANSAKSI
+    # BALANCING DATA - OVERSAMPLING TRANSAKSI
     # -----------------------------------
-    st.subheader("🔧 Oversampling (Menyamakan jumlah transaksi single-item & multi-item)")
 
     trx_count = df.groupby('No. Pesanan')['Nama Produk'].nunique()
     trx_list = df.groupby('No. Pesanan')['Nama Produk'].apply(list)
@@ -75,18 +72,12 @@ if uploaded:
 
     balanced_transactions = single_list + multi_oversampled
 
-    st.write(f"Single-item: {len(single_list)} transaksi")
-    st.write(f"Multi-item : {len(multi_oversampled)} transaksi")
-
     # -----------------------------------
-    # TRANSACTION ENCODING
+    # TRANFORMATION
     # -----------------------------------
     te = TransactionEncoder()
     te_ary = te.fit(balanced_transactions).transform(balanced_transactions)
     df_encoded = pd.DataFrame(te_ary, columns=te.columns_).astype(int)
-
-    st.subheader("📌 Data Setelah Encoding")
-    st.dataframe(df_encoded.head())
 
     # -----------------------------------
     # INPUT PARAMETER APRIORI
