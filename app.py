@@ -117,16 +117,16 @@ if uploaded:
         rules_clean = rules_clean.sort_values(by="confidence", ascending=False)
 
         st.dataframe(rules_clean, hide_index=True)
-
+        
     # -----------------------------------
     # TOP 3 INTERPRETASI SEDERHANA
     # -----------------------------------
     st.subheader("📝 Top 3 Interpretasi Rekomendasi")
 
     if not rules_clean.empty:
-    top_3 = rules_clean.head(3)  # ambil 3 confidence tertinggi
+        top_3 = rules_clean.head(3)  # ambil 3 confidence tertinggi
 
-        for index, row in top_3.iterrows():
+    for index, row in top_3.iterrows():
         antecedent = row['antecedents']
         consequent = row['consequents']
         conf = round(row['confidence'] * 100, 2)
@@ -136,23 +136,24 @@ if uploaded:
         st.write(f"- Confidence: **{conf}%** → dari 100 pembeli `{antecedent}`, sekitar **{conf}** juga membeli `{consequent}`.")
         
         if lift > 1:
-            st.write(f"- Lift: **{lift}** → hubungan pembelian **kuat & bukan kebetulan**, sering dibeli bersamaan.")
+            st.write(f"- Lift: **{lift}** → hubungan pembelian **kuat & bukan kebetulan**.")
         elif lift == 1:
-            st.write(f"- Lift: **{lift}** → hubungan **netral**, tidak saling mempengaruhi.")
+            st.write(f"- Lift: **{lift}** → hubungan **netral**.")
         else:
-            st.write(f"- Lift: **{lift}** → hubungan **lemah**, pola kurang signifikan.")
+            st.write(f"- Lift: **{lift}** → hubungan **lemah & kurang signifikan**.")
 
         st.write("---")
 
     else:
-    st.write("Tidak ada aturan yang terbentuk dengan parameter support dan confidence saat ini.")
+        st.write("Tidak ada aturan yang terbentuk dengan parameter support dan confidence saat ini.")
 
-        # -----------------------------------
-        # DOWNLOADABLE RESULT
-        # -----------------------------------
-        csv_rules = rules_clean.to_csv(index=False).encode('utf-8')
 
-        st.download_button(
+    # -----------------------------------
+    # DOWNLOADABLE RESULT
+    # -----------------------------------
+    csv_rules = rules_clean.to_csv(index=False).encode('utf-8')
+
+    st.download_button(
             label="⬇️ Download Hasil Rules (CSV)",
             data=csv_rules,
             file_name="apriori_rules.csv",
