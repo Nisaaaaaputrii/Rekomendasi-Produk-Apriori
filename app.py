@@ -125,7 +125,7 @@ if uploaded:
                 conf = round(row['confidence'] * 100, 2)
                 lift = round(row['lift'], 2)
 
-                st.markdown(f"### 🔹 {antecedent} → {consequent}")
+                st.markdown(f"##### 🔹 {antecedent} → {consequent}")
                 st.write(f"- Confidence: **{conf}%** → sekitar **{conf} dari 100 pembeli `{antecedent}`** juga membeli `{consequent}`.")
 
                 if lift > 1:
