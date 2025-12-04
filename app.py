@@ -118,6 +118,35 @@ if uploaded:
 
         st.dataframe(rules_clean, hide_index=True)
 
+    # -----------------------------------
+    # TOP 3 INTERPRETASI SEDERHANA
+    # -----------------------------------
+    st.subheader("📝 Top 3 Interpretasi Rekomendasi")
+
+    if not rules_clean.empty:
+    top_3 = rules_clean.head(3)  # ambil 3 confidence tertinggi
+
+        for index, row in top_3.iterrows():
+        antecedent = row['antecedents']
+        consequent = row['consequents']
+        conf = round(row['confidence'] * 100, 2)
+        lift = round(row['lift'], 2)
+
+        st.markdown(f"### 🔹 {antecedent} → {consequent}")
+        st.write(f"- Confidence: **{conf}%** → dari 100 pembeli `{antecedent}`, sekitar **{conf}** juga membeli `{consequent}`.")
+        
+        if lift > 1:
+            st.write(f"- Lift: **{lift}** → hubungan pembelian **kuat & bukan kebetulan**, sering dibeli bersamaan.")
+        elif lift == 1:
+            st.write(f"- Lift: **{lift}** → hubungan **netral**, tidak saling mempengaruhi.")
+        else:
+            st.write(f"- Lift: **{lift}** → hubungan **lemah**, pola kurang signifikan.")
+
+        st.write("---")
+
+    else:
+    st.write("Tidak ada aturan yang terbentuk dengan parameter support dan confidence saat ini.")
+
         # -----------------------------------
         # DOWNLOADABLE RESULT
         # -----------------------------------
