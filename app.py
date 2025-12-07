@@ -81,7 +81,7 @@ if uploaded:
         st.write("Association Rules:")
         st.dataframe(rules_clean, hide_index=True)
 
-        st.subheader("Interpretasi Sederhana (Top 3 Aturan Terkuat)")
+        st.subheader("Interpretasi Sederhana (Top 3)")
 
         if not rules_clean.empty:
             top3 = rules_clean.head(3)
@@ -93,20 +93,19 @@ if uploaded:
                 lift = round(row['lift'], 2)
 
                 st.write(f"- Jika konsumen membeli **{antecedent}**, maka sekitar **{conf}%** kemungkinan juga membeli **{consequent}**.")
+                st.write(f"  Nilai lift: {lift}")
 
-
-                
                 if lift > 1:
-                    st.write("  Nilai lift: {lift} → Hubungan pembelian **kuat**, bukan kebetulan. Produk cocok dijadikan bundling/paket.")
+                    st.write(f"  Nilai lift: {lift} → Hubungan pembelian **kuat**, bukan kebetulan. Produk cocok dijadikan bundling/paket.")
                 elif lift == 1:
-                    st.write("  Nilai lift: {lift} → Hubungan pembelian **netral**, pembelian wajar tanpa saling mempengaruhi.")
+                    st.write(f"  Nilai lift: {lift} → Hubungan pembelian **netral**, pembelian wajar tanpa saling mempengaruhi.")
                 else:
-                    st.write("  Nilai lift: {lift} → Hubungan pembelian **lemah**, pola tidak signifikan sehingga tidak cocok dijadikan rekomendasi.")
+                    st.write(f"  Nilai lift: {lift} → Hubungan pembelian **lemah**, pola tidak signifikan sehingga tidak cocok dijadikan rekomendasi.")
                 st.write("")
 
         else:
             st.write("Tidak ada aturan terbentuk. Silakan turunkan nilai support atau confidence.")
 
-
+        
         csv_rules = rules_clean.to_csv(index=False).encode('utf-8')
         st.download_button("⬇️ Download Hasil Rules", csv_rules, "hasil_apriori.csv", "text/csv")
