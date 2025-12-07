@@ -8,48 +8,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 # tampilan app
 st.set_page_config(page_title="Analisis Apriori", layout="wide")
 
-st.set_page_config(page_title="Analisis Apriori", layout="wide")
 
-# tampilan UI
-st.markdown("""
-<style>
-
-    /* background utama aplikasi */
-    .stApp {
-        background-color: #FFF1D6 !important;
-    }
-
-    /* container konten (agar putih dan rapi) */
-    .main > div {
-        background-color: white !important;
-        border-radius: 10px;
-        padding: 25px;
-        box-shadow: 0px 0px 8px rgba(0,0,0,0.05);
-    }
-
-    /* style button */
-    .stButton>button {
-        background-color: #FF8C00;
-        color: white;
-        border-radius: 8px;
-        border: none;
-        padding: 8px 18px;
-        font-size: 15px;
-    }
-    .stButton>button:hover {
-        background-color: #e67800;
-        color: white;
-    }
-
-    /* style header text (judul tetap minimalis) */
-    h1, h2, h3, h4 {
-        color: #C46500;
-    }
-
-</style>
-""", unsafe_allow_html=True)
-
-# proses
 
 st.title("Sistem Rekomendasi Produk - Apriori")
 st.write("Unggah dataset transaksi untuk menemukan pola pembelian konsumen.")
