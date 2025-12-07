@@ -93,7 +93,7 @@ if uploaded:
                 lift = round(row['lift'], 2)
 
                 st.write(f"- Jika konsumen membeli **{antecedent}**, maka sekitar **{conf}%** kemungkinan juga membeli **{consequent}**.")
-                st.write(f"  Nilai lift: {lift}")
+                
 
                 if lift > 1:
                     st.write(f"  Nilai lift: {lift} → Hubungan pembelian **kuat**, bukan kebetulan. Produk cocok dijadikan bundling/paket.")
