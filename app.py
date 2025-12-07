@@ -8,8 +8,50 @@ from mlxtend.frequent_patterns import apriori, association_rules
 # tampilan app
 st.set_page_config(page_title="Analisis Apriori", layout="wide")
 
+st.set_page_config(page_title="Analisis Apriori", layout="wide")
 
-st.title("Analisis Association Rule - Apriori")
+# tampilan UI
+st.markdown("""
+<style>
+
+    /* background utama aplikasi */
+    .stApp {
+        background-color: #FFF1D6 !important;
+    }
+
+    /* container konten (agar putih dan rapi) */
+    .main > div {
+        background-color: white !important;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0px 0px 8px rgba(0,0,0,0.05);
+    }
+
+    /* style button */
+    .stButton>button {
+        background-color: #FF8C00;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 8px 18px;
+        font-size: 15px;
+    }
+    .stButton>button:hover {
+        background-color: #e67800;
+        color: white;
+    }
+
+    /* style header text (judul tetap minimalis) */
+    h1, h2, h3, h4 {
+        color: #C46500;
+    }
+
+</style>
+""", unsafe_allow_html=True)
+
+# proses
+
+st.title("Sistem Rekomendasi Produk - Apriori")
 st.write("Unggah dataset transaksi untuk menemukan pola pembelian konsumen.")
 uploaded = st.file_uploader("Pilih File Dataset (.xlsx / .csv)", type=["xlsx", "csv"])
 
@@ -68,8 +110,7 @@ if uploaded:
     if st.button("🔍 Proses Apriori"):
 
         frequent_itemsets = apriori(df_encoded, min_support=min_support, use_colnames=True)
-        st.write("Frequent Itemsets:")
-        st.dataframe(frequent_itemsets)
+
 
         rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=min_confidence)
         rules_clean = rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].copy()
@@ -81,7 +122,7 @@ if uploaded:
         st.write("Association Rules:")
         st.dataframe(rules_clean, hide_index=True)
 
-        st.subheader("Interpretasi Sederhana (Top 3)")
+        st.subheader("Interpretasi (Top 3)")
 
         if not rules_clean.empty:
             top3 = rules_clean.head(3)
